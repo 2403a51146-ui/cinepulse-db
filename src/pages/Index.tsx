@@ -5,30 +5,20 @@ import MovieCard from "@/components/MovieCard";
 import MovieModal from "@/components/MovieModal";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { mockMovies } from "@/data/mockMovies";
+import { useMovies } from "@/hooks/useMovies";
 
 const Index = () => {
-  const [selectedMovie, setSelectedMovie] = useState<typeof mockMovies[0] | null>(null);
+  const [selectedMovie, setSelectedMovie] = useState<any | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("rating-desc");
 
-  const handleMovieClick = (movie: typeof mockMovies[0]) => {
+  const { data: movies = [], isLoading } = useMovies(searchQuery, sortBy);
+
+  const handleMovieClick = (movie: any) => {
     setSelectedMovie(movie);
     setIsModalOpen(true);
   };
-
-  const filteredMovies = mockMovies
-    .filter(movie => 
-      movie.title.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    .sort((a, b) => {
-      if (sortBy === "rating-desc") return b.rating - a.rating;
-      if (sortBy === "rating-asc") return a.rating - b.rating;
-      if (sortBy === "year-desc") return b.year - a.year;
-      if (sortBy === "year-asc") return a.year - b.year;
-      return 0;
-    });
 
   return (
     <div className="min-h-screen bg-background">
@@ -70,22 +60,36 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-          {filteredMovies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              {...movie}
-              onClick={() => handleMovieClick(movie)}
-            />
-          ))}
-        </div>
-
-        {filteredMovies.length === 0 && (
+        {isLoading ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground text-lg">
-              No movies found matching your search.
-            </p>
+            <p className="text-muted-foreground">Loading movies...</p>
           </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+              {movies.map((movie) => (
+                <MovieCard
+                  key={movie.id}
+                  title={movie.title}
+                  year={movie.year}
+                  rating={movie.rating}
+                  numRatings={movie.num_ratings}
+                  posterUrl={movie.poster_url}
+                  genre={movie.genre}
+                  runtime={movie.runtime}
+                  onClick={() => handleMovieClick(movie)}
+                />
+              ))}
+            </div>
+
+            {movies.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground text-lg">
+                  No movies found matching your search.
+                </p>
+              </div>
+            )}
+          </>
         )}
       </div>
 

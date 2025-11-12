@@ -1,7 +1,8 @@
-import { Film, Search, User, TrendingUp } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Film, Search, User, TrendingUp, LogOut } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface NavbarProps {
   onSearch?: (query: string) => void;
@@ -9,6 +10,8 @@ interface NavbarProps {
 
 const Navbar = ({ onSearch }: NavbarProps) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isAdmin, signOut } = useAuth();
   
   const isActive = (path: string) => location.pathname === path;
 
@@ -38,27 +41,41 @@ const Navbar = ({ onSearch }: NavbarProps) => {
           </div>
 
           <div className="flex items-center gap-2">
-            <Link to="/dashboard">
-              <Button 
-                variant={isActive("/dashboard") ? "default" : "ghost"}
-                size="sm"
-                className="gap-2"
-              >
-                <TrendingUp className="w-4 h-4" />
-                <span className="hidden sm:inline">Analytics</span>
-              </Button>
-            </Link>
+            {isAdmin && (
+              <Link to="/dashboard">
+                <Button 
+                  variant={isActive("/dashboard") ? "default" : "ghost"}
+                  size="sm"
+                  className="gap-2"
+                >
+                  <TrendingUp className="w-4 h-4" />
+                  <span className="hidden sm:inline">Dashboard</span>
+                </Button>
+              </Link>
+            )}
             
-            <Link to="/login">
+            {user ? (
               <Button 
-                variant={isActive("/login") ? "default" : "ghost"}
+                variant="ghost"
                 size="sm"
                 className="gap-2"
+                onClick={signOut}
               >
-                <User className="w-4 h-4" />
-                <span className="hidden sm:inline">Login</span>
+                <LogOut className="w-4 h-4" />
+                <span className="hidden sm:inline">Logout</span>
               </Button>
-            </Link>
+            ) : (
+              <Link to="/login">
+                <Button 
+                  variant={isActive("/login") ? "default" : "ghost"}
+                  size="sm"
+                  className="gap-2"
+                >
+                  <User className="w-4 h-4" />
+                  <span className="hidden sm:inline">Login</span>
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
