@@ -1,0 +1,131 @@
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Star, Calendar, Clock, BarChart3, Heart, MessageCircle } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+interface Movie {
+  title: string;
+  year: number;
+  certificate: string;
+  genre: string[];
+  overview: string;
+  runtime: number;
+  rating: number;
+  numRatings: number;
+  posterUrl: string;
+}
+
+interface MovieModalProps {
+  movie: Movie | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const MovieModal = ({ movie, open, onOpenChange }: MovieModalProps) => {
+  if (!movie) return null;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0 bg-card border-border">
+        <ScrollArea className="max-h-[90vh]">
+          <div className="relative">
+            <div className="aspect-video w-full overflow-hidden bg-muted">
+              <img 
+                src={movie.posterUrl} 
+                alt={movie.title}
+                className="w-full h-full object-cover blur-md scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            </div>
+            
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-48 aspect-[2/3] rounded-lg overflow-hidden shadow-card border-2 border-secondary">
+                <img 
+                  src={movie.posterUrl} 
+                  alt={movie.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 space-y-6">
+            <DialogHeader>
+              <DialogTitle className="text-3xl font-bold text-foreground">
+                {movie.title}
+              </DialogTitle>
+            </DialogHeader>
+
+            <div className="flex items-center gap-4 flex-wrap">
+              <Badge variant="outline" className="border-secondary text-secondary">
+                {movie.certificate}
+              </Badge>
+              
+              <div className="flex items-center gap-1 text-secondary">
+                <Star className="w-5 h-5 fill-current" />
+                <span className="text-lg font-bold">{movie.rating.toFixed(1)}</span>
+                <span className="text-sm text-muted-foreground">/ 10</span>
+              </div>
+              
+              <span className="text-sm text-muted-foreground">({movie.numRatings} ratings)</span>
+              
+              <div className="flex items-center gap-1 text-muted-foreground">
+                <Calendar className="w-4 h-4" />
+                <span className="text-sm">{movie.year}</span>
+              </div>
+              
+              <div className="flex items-center gap-1 text-muted-foreground">
+                <Clock className="w-4 h-4" />
+                <span className="text-sm">{movie.runtime} min</span>
+              </div>
+            </div>
+
+            <div className="flex gap-2 flex-wrap">
+              {movie.genre.map((g) => (
+                <Badge key={g} variant="secondary">
+                  {g}
+                </Badge>
+              ))}
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold mb-2 text-foreground">Overview</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                {movie.overview}
+              </p>
+            </div>
+
+            <div className="flex gap-2 flex-wrap">
+              <Button className="gap-2">
+                <Star className="w-4 h-4" />
+                Rate Movie
+              </Button>
+              <Button variant="outline" className="gap-2">
+                <Heart className="w-4 h-4" />
+                Add to Favorites
+              </Button>
+              <Button variant="outline" className="gap-2">
+                <MessageCircle className="w-4 h-4" />
+                Comment
+              </Button>
+              <Button variant="outline" className="gap-2">
+                <BarChart3 className="w-4 h-4" />
+                Analyze
+              </Button>
+            </div>
+
+            <div className="border-t border-border pt-4">
+              <h3 className="text-lg font-semibold mb-3 text-foreground">Comments</h3>
+              <div className="text-sm text-muted-foreground">
+                No comments yet. Be the first to share your thoughts!
+              </div>
+            </div>
+          </div>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default MovieModal;
