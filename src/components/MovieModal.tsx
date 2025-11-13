@@ -6,6 +6,7 @@ import { Star, Calendar, Clock, BarChart3, Heart, MessageCircle } from "lucide-r
 import { ScrollArea } from "@/components/ui/scroll-area";
 import RatingDialog from "./RatingDialog";
 import CommentSection from "./CommentSection";
+import MovieAnalytics from "./MovieAnalytics";
 import { useToggleFavorite, useFavoriteStatus } from "@/hooks/useMovieInteractions";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
@@ -32,6 +33,7 @@ interface MovieModalProps {
 const MovieModal = ({ movie, open, onOpenChange }: MovieModalProps) => {
   const [showRatingDialog, setShowRatingDialog] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
   const { user } = useAuth();
   const { data: isFavorite } = useFavoriteStatus(movie?.id || "");
   const toggleFavorite = useToggleFavorite();
