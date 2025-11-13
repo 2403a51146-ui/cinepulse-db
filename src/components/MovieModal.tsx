@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, Calendar, Clock, BarChart3, Heart, MessageCircle } from "lucide-react";
+import { Star, Calendar, Clock, Heart, MessageCircle, TrendingUp } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import RatingDialog from "./RatingDialog";
 import CommentSection from "./CommentSection";
@@ -71,6 +71,10 @@ const MovieModal = ({ movie, open, onOpenChange }: MovieModalProps) => {
       return;
     }
     setShowComments(!showComments);
+  };
+
+  const handleAnalyticsClick = () => {
+    setShowAnalytics(!showAnalytics);
   };
 
   return (
@@ -158,11 +162,22 @@ const MovieModal = ({ movie, open, onOpenChange }: MovieModalProps) => {
                   <MessageCircle className="w-4 h-4" />
                   {showComments ? "Hide Comments" : "View Comments"}
                 </Button>
+                <Button variant="outline" className="gap-2" onClick={handleAnalyticsClick}>
+                  <TrendingUp className="w-4 h-4" />
+                  {showAnalytics ? "Hide Analytics" : "View Analytics"}
+                </Button>
               </div>
 
               {showComments && (
                 <div className="border-t border-border pt-4">
                   <CommentSection movieId={movie.id} />
+                </div>
+              )}
+
+              {showAnalytics && (
+                <div className="border-t border-border pt-4">
+                  <h3 className="text-lg font-semibold mb-4 text-foreground">Movie Analytics</h3>
+                  <MovieAnalytics movieId={movie.id} />
                 </div>
               )}
             </div>
