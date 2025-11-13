@@ -1,4 +1,4 @@
-import { Film, Search, User, TrendingUp, LogOut } from "lucide-react";
+import { Film, Search, User, TrendingUp, LogOut, BarChart3 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,6 +41,17 @@ const Navbar = ({ onSearch }: NavbarProps) => {
           </div>
 
           <div className="flex items-center gap-2">
+            <Link to="/analytics">
+              <Button 
+                variant={isActive("/analytics") ? "default" : "ghost"}
+                size="sm"
+                className="gap-2"
+              >
+                <BarChart3 className="w-4 h-4" />
+                <span className="hidden sm:inline">Analytics</span>
+              </Button>
+            </Link>
+
             {isAdmin && (
               <Link to="/dashboard">
                 <Button 
