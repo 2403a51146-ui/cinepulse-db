@@ -53,14 +53,14 @@ const Navbar = ({ onSearch }: NavbarProps) => {
             </Link>
 
             {isAdmin && (
-              <Link to="/dashboard">
+              <Link to="/admin">
                 <Button 
-                  variant={isActive("/dashboard") ? "default" : "ghost"}
+                  variant={isActive("/admin") ? "default" : "ghost"}
                   size="sm"
                   className="gap-2"
                 >
                   <TrendingUp className="w-4 h-4" />
-                  <span className="hidden sm:inline">Dashboard</span>
+                  <span className="hidden sm:inline">Admin</span>
                 </Button>
               </Link>
             )}
