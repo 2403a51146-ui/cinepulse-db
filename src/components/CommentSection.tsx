@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useMovieComments, useAddComment } from "@/hooks/useMovieInteractions";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatDistanceToNow } from "date-fns";
+import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface CommentSectionProps {
   movieId: string;
@@ -14,6 +16,30 @@ const CommentSection = ({ movieId }: CommentSectionProps) => {
   const { user } = useAuth();
   const { data: comments, isLoading } = useMovieComments(movieId);
   const addComment = useAddComment();
+  const queryClient = useQueryClient();
+
+  // Real-time subscription for comments
+  useEffect(() => {
+    const channel = supabase
+      .channel(`comments-${movieId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'comments',
+          filter: `movie_id=eq.${movieId}`
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['comments', movieId] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [movieId, queryClient]);
 
   const handleSubmit = async () => {
     if (!comment.trim()) return;
