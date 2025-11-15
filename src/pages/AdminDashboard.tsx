@@ -17,7 +17,9 @@ export default function AdminDashboard() {
   const [selectedMovieId, setSelectedMovieId] = useState<string>("");
   const [uploading, setUploading] = useState(false);
   const [posterFile, setPosterFile] = useState<File | null>(null);
+  const [posterUrl, setPosterUrl] = useState<string>("");
   const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [editMode, setEditMode] = useState<"upload" | "url">("upload");
 
   // Check if user is admin
   const { data: isAdmin } = useQuery({
@@ -115,6 +117,44 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleUrlSubmit = async () => {
+    if (!selectedMovieId || !posterUrl) {
+      toast({
+        title: "Missing information",
+        description: "Please select a movie and enter a poster URL",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const { error } = await supabase
+        .from('movies')
+        .update({ poster_url: posterUrl })
+        .eq('id', selectedMovieId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Movie poster URL updated successfully",
+      });
+
+      setPosterUrl("");
+      setSelectedMovieId("");
+      setPreviewUrl("");
+    } catch (error: any) {
+      toast({
+        title: "Update failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   if (isAdmin === false) {
     return (
       <div className="min-h-screen bg-background">
@@ -139,9 +179,9 @@ export default function AdminDashboard() {
         
         <Card>
           <CardHeader>
-            <CardTitle>Upload Movie Poster</CardTitle>
+            <CardTitle>Manage Movie Posters</CardTitle>
             <CardDescription>
-              Select a movie and upload a custom poster image
+              Upload custom posters or enter poster URLs directly
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -162,46 +202,122 @@ export default function AdminDashboard() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="poster-upload">Poster Image</Label>
-              <Input
-                id="poster-upload"
-                type="file"
-                accept="image/*"
-                onChange={handleFileSelect}
-                disabled={uploading}
-              />
+              <Label>Edit Mode</Label>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant={editMode === "upload" ? "default" : "outline"}
+                  onClick={() => setEditMode("upload")}
+                  className="flex-1"
+                >
+                  Upload File
+                </Button>
+                <Button
+                  type="button"
+                  variant={editMode === "url" ? "default" : "outline"}
+                  onClick={() => setEditMode("url")}
+                  className="flex-1"
+                >
+                  Enter URL
+                </Button>
+              </div>
             </div>
 
-            {previewUrl && (
-              <div className="space-y-2">
-                <Label>Preview</Label>
-                <div className="border rounded-lg p-4 flex justify-center">
-                  <img
-                    src={previewUrl}
-                    alt="Poster preview"
-                    className="max-w-xs max-h-96 object-contain"
+            {editMode === "upload" ? (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="poster-upload">Poster Image</Label>
+                  <Input
+                    id="poster-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    disabled={!selectedMovieId || uploading}
                   />
                 </div>
-              </div>
-            )}
 
-            <Button
-              onClick={handleUpload}
-              disabled={!posterFile || !selectedMovieId || uploading}
-              className="w-full"
-            >
-              {uploading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Uploading...
-                </>
-              ) : (
-                <>
-                  <Upload className="mr-2 h-4 w-4" />
-                  Upload Poster
-                </>
-              )}
-            </Button>
+                {previewUrl && (
+                  <div className="space-y-2">
+                    <Label>Preview</Label>
+                    <div className="relative w-48 h-72 rounded-lg overflow-hidden border-2 border-border">
+                      <img
+                        src={previewUrl}
+                        alt="Poster preview"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <Button
+                  onClick={handleUpload}
+                  disabled={!posterFile || uploading || !selectedMovieId}
+                  className="w-full"
+                >
+                  {uploading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="mr-2 h-4 w-4" />
+                      Upload Poster
+                    </>
+                  )}
+                </Button>
+              </>
+            ) : (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="poster-url">Poster URL</Label>
+                  <Input
+                    id="poster-url"
+                    type="url"
+                    placeholder="https://example.com/poster.jpg"
+                    value={posterUrl}
+                    onChange={(e) => {
+                      setPosterUrl(e.target.value);
+                      if (e.target.value) {
+                        setPreviewUrl(e.target.value);
+                      }
+                    }}
+                    disabled={!selectedMovieId || uploading}
+                  />
+                </div>
+
+                {posterUrl && (
+                  <div className="space-y-2">
+                    <Label>Preview</Label>
+                    <div className="relative w-48 h-72 rounded-lg overflow-hidden border-2 border-border">
+                      <img
+                        src={previewUrl}
+                        alt="Poster preview"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "https://via.placeholder.com/300x450?text=Invalid+URL";
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <Button
+                  onClick={handleUrlSubmit}
+                  disabled={!posterUrl || uploading || !selectedMovieId}
+                  className="w-full"
+                >
+                  {uploading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Updating...
+                    </>
+                  ) : (
+                    "Update Poster URL"
+                  )}
+                </Button>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>

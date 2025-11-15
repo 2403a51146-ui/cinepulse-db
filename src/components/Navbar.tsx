@@ -1,4 +1,4 @@
-import { Film, Search, User, TrendingUp, LogOut, BarChart3 } from "lucide-react";
+import { Film, Search, User, TrendingUp, LogOut, BarChart3, Heart } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,6 +51,19 @@ const Navbar = ({ onSearch }: NavbarProps) => {
                 <span className="hidden sm:inline">Analytics</span>
               </Button>
             </Link>
+
+            {user && (
+              <Link to="/favorites">
+                <Button 
+                  variant={isActive("/favorites") ? "default" : "ghost"}
+                  size="sm"
+                  className="gap-2"
+                >
+                  <Heart className="w-4 h-4" />
+                  <span className="hidden sm:inline">Favorites</span>
+                </Button>
+              </Link>
+            )}
 
             {isAdmin && (
               <Link to="/admin">

@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
 
 interface AuthContextType {
   user: User | null;
@@ -64,6 +65,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       password,
     });
     if (!error) {
+      toast({
+        title: "Welcome back!",
+        description: "You've successfully logged in.",
+      });
       navigate("/");
     }
     return { error };
@@ -79,6 +84,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       },
     });
     if (!error) {
+      toast({
+        title: "Account created!",
+        description: "Welcome to CinePulse!",
+      });
       navigate("/");
     }
     return { error };
@@ -86,6 +95,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signOut = async () => {
     await supabase.auth.signOut();
+    toast({
+      title: "Logged out",
+      description: "You've been successfully logged out.",
+    });
     navigate("/login");
   };
 
