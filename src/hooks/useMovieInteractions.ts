@@ -39,9 +39,11 @@ export const useAddOrUpdateRating = () => {
           user_id: user.id,
           movie_id: movieId,
           rating,
+        }, {
+          onConflict: 'user_id,movie_id'
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -49,7 +51,8 @@ export const useAddOrUpdateRating = () => {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["rating", variables.movieId] });
       queryClient.invalidateQueries({ queryKey: ["movies"] });
-      toast({ title: "Rating saved!" });
+      queryClient.invalidateQueries({ queryKey: ["movie-ratings", variables.movieId] });
+      toast({ title: "Rating updated!" });
     },
   });
 };
