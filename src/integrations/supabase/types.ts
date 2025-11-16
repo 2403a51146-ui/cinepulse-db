@@ -82,6 +82,8 @@ export type Database = {
           genre: string[]
           id: string
           num_ratings: number | null
+          original_num_ratings: number | null
+          original_rating: number | null
           overview: string | null
           poster_url: string | null
           rating: number | null
@@ -96,6 +98,8 @@ export type Database = {
           genre: string[]
           id?: string
           num_ratings?: number | null
+          original_num_ratings?: number | null
+          original_rating?: number | null
           overview?: string | null
           poster_url?: string | null
           rating?: number | null
@@ -110,6 +114,8 @@ export type Database = {
           genre?: string[]
           id?: string
           num_ratings?: number | null
+          original_num_ratings?: number | null
+          original_rating?: number | null
           overview?: string | null
           poster_url?: string | null
           rating?: number | null
