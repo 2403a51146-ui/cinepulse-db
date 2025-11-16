@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { Navigate } from "react-router-dom";
-import cinepulseBg from "@/assets/cinepulse-bg.jpg";
+import cinemaBrightBg from "@/assets/cinema-bright-bg.jpg";
 
 const Login = () => {
   const { signIn, signUp, user } = useAuth();
@@ -55,7 +55,7 @@ const Login = () => {
   return (
     <div 
       className="min-h-screen flex items-center justify-center bg-cover bg-center relative"
-      style={{ backgroundImage: `url(${cinepulseBg})` }}
+      style={{ backgroundImage: `url(${cinemaBrightBg})` }}
     >
       <div className="absolute inset-0 bg-background/90 backdrop-blur-sm"></div>
       <Card className="w-full max-w-md mx-4 border-secondary/20 shadow-elegant relative z-10">
