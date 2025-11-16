@@ -23,7 +23,7 @@ const MovieAnalytics = ({ movieId }: MovieAnalyticsProps) => {
     );
   }
 
-  // Calculate rating distribution
+  // Calculate rating distribution (only from user ratings, not original)
   const distribution = Array.from({ length: 10 }, (_, i) => ({
     rating: i + 1,
     count: ratingsData.filter((r: any) => r.rating === i + 1).length,

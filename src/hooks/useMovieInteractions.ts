@@ -61,13 +61,32 @@ export const useMovieComments = (movieId: string) => {
       const { data, error } = await supabase
         .from("comments")
         .select(`
-          *,
-          profiles:user_id (name, email)
+          id,
+          text,
+          created_at,
+          user_id,
+          movie_id
         `)
         .eq("movie_id", movieId)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
+      
+      // Fetch user profiles separately
+      if (data && data.length > 0) {
+        const userIds = [...new Set(data.map(c => c.user_id))];
+        const { data: profiles } = await supabase
+          .from("profiles")
+          .select("id, name, email")
+          .in("id", userIds);
+        
+        // Map profiles to comments
+        return data.map(comment => ({
+          ...comment,
+          profiles: profiles?.find(p => p.id === comment.user_id)
+        }));
+      }
+      
       return data;
     },
   });
