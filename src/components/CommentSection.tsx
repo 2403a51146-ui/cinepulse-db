@@ -42,9 +42,13 @@ const CommentSection = ({ movieId }: CommentSectionProps) => {
   }, [movieId, queryClient]);
 
   const handleSubmit = async () => {
-    if (!comment.trim()) return;
-    await addComment.mutateAsync({ movieId, text: comment });
-    setComment("");
+    if (!comment.trim() || !user) return;
+    try {
+      await addComment.mutateAsync({ movieId, text: comment });
+      setComment("");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
   };
 
   return (

@@ -79,6 +79,27 @@ const MovieAnalytics = ({ movieId }: MovieAnalyticsProps) => {
     };
   }) : [];
 
+  // Calculate overall rating trend (combining original + user ratings conceptually)
+  const overallTrendData = hasUserRatings ? userRatings.map((r: any, idx: number) => {
+    const userSlice = userRatings.slice(0, idx + 1);
+    const userAvg = userSlice.reduce((sum: number, rating: any) => sum + rating.rating, 0) / userSlice.length;
+    
+    // Blend with original rating
+    const originalRating = movieData.original_rating || 0;
+    const originalCount = movieData.original_num_ratings || 0;
+    const userCount = userSlice.length;
+    const totalCount = originalCount + userCount;
+    
+    const combinedAvg = totalCount > 0
+      ? (originalRating * originalCount + userAvg * userCount) / totalCount
+      : userAvg;
+    
+    return {
+      index: idx + 1,
+      average: Number(combinedAvg.toFixed(2)),
+    };
+  }) : [];
+
   const chartConfig = {
     count: {
       label: "User Ratings",
@@ -194,6 +215,36 @@ const MovieAnalytics = ({ movieId }: MovieAnalyticsProps) => {
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Bar dataKey="count" fill="var(--color-count)" radius={[4, 4, 0, 0]} />
                   </BarChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm">Overall Rating Trend Over Time</CardTitle>
+              <p className="text-xs text-muted-foreground mt-1">Combined original and user ratings</p>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer config={chartConfig} className="h-[200px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={overallTrendData}>
+                    <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                    <XAxis
+                      dataKey="index"
+                      className="text-xs"
+                      label={{ value: "Rating Number", position: "insideBottom", offset: -5 }}
+                    />
+                    <YAxis domain={[0, 10]} className="text-xs" />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Line
+                      type="monotone"
+                      dataKey="average"
+                      stroke="var(--color-average)"
+                      strokeWidth={2}
+                      dot={{ fill: "var(--color-average)" }}
+                    />
+                  </LineChart>
                 </ResponsiveContainer>
               </ChartContainer>
             </CardContent>
