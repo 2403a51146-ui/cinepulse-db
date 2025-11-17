@@ -6,6 +6,7 @@ import MovieModal from "@/components/MovieModal";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useMovies } from "@/hooks/useMovies";
+import Cinema3DBackground from "@/components/Cinema3DBackground";
 
 const Index = () => {
   const [selectedMovie, setSelectedMovie] = useState<any | null>(null);
@@ -24,14 +25,14 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar onSearch={setSearchQuery} />
       
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-hero opacity-20" />
-        <div className="container mx-auto px-4 py-12 relative">
+      <div className="relative overflow-hidden min-h-[400px] flex items-center">
+        <Cinema3DBackground />
+        <div className="container mx-auto px-4 py-16 relative z-10">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 text-foreground">
+            <h1 className="text-6xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700] drop-shadow-2xl leading-tight">
               Discover Telugu Cinema
             </h1>
-            <p className="text-xl text-muted-foreground mb-8">
+            <p className="text-xl md:text-2xl text-[#FFD700] drop-shadow-lg font-semibold">
               Explore the rich world of Telugu movies, rate your favorites, and connect with fellow cinema lovers.
             </p>
           </div>
