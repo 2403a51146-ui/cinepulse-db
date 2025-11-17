@@ -94,12 +94,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    toast({
-      title: "Logged out",
-      description: "You've been successfully logged out.",
-    });
-    navigate("/login");
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      // Even if server logout fails (e.g., expired session), clear local state
+      console.log("Logout error (session may be expired):", error);
+    } finally {
+      // Always clear local state and redirect
+      setSession(null);
+      setUser(null);
+      setIsAdmin(false);
+      toast({
+        title: "Logged out",
+        description: "You've been successfully logged out.",
+      });
+      navigate("/login");
+    }
   };
 
   return (
