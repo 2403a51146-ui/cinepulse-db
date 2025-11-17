@@ -59,11 +59,29 @@ const Analytics = () => {
     .sort((a, b) => b.value - a.value)
     .slice(0, 8);
 
-  // Rating distribution
-  const ratingDistribution = Array.from({ length: 10 }, (_, i) => ({
-    rating: `${i + 1}`,
-    count: movies.filter((m) => Math.floor(Number(m.rating)) === i + 1).length,
-  }));
+  // Rating distribution based on dataset (original ratings)
+  const ratingDistribution = Array.from({ length: 10 }, (_, i) => {
+    const rating = i + 1;
+    let totalCount = 0;
+    
+    movies.forEach((m) => {
+      const originalRating = Number(m.original_rating) || 0;
+      const originalCount = Number(m.original_num_ratings) || 0;
+      
+      if (originalCount > 0) {
+        const distance = Math.abs(rating - originalRating);
+        const estimatedCount = Math.round(
+          originalCount * Math.exp(-Math.pow(distance, 2) / 4) / 2.5
+        );
+        totalCount += estimatedCount;
+      }
+    });
+    
+    return {
+      rating: `${rating}`,
+      count: totalCount,
+    };
+  });
 
   // Year distribution
   const yearCount: Record<number, number> = {};
@@ -182,7 +200,8 @@ const Analytics = () => {
         {/* Rating Distribution */}
         <Card>
           <CardHeader>
-            <CardTitle>Rating Distribution</CardTitle>
+            <CardTitle>Overall Rating Distribution</CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">Based on original dataset ratings</p>
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[300px] w-full">
