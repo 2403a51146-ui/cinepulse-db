@@ -21,6 +21,17 @@ const Analytics = () => {
     },
   });
 
+  const { data: userRatingsData } = useQuery({
+    queryKey: ["all-user-ratings"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("ratings")
+        .select("rating");
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const { data: usersCount } = useQuery({
     queryKey: ["users-count"],
     queryFn: async () => {
@@ -59,27 +70,31 @@ const Analytics = () => {
     .sort((a, b) => b.value - a.value)
     .slice(0, 8);
 
-  // Rating distribution based on dataset (original ratings)
+  // Rating distribution (combined original + user ratings)
   const ratingDistribution = Array.from({ length: 10 }, (_, i) => {
     const rating = i + 1;
-    let totalCount = 0;
+    let estimatedOriginalCount = 0;
     
+    // Estimate original ratings distribution from dataset
     movies.forEach((m) => {
       const originalRating = Number(m.original_rating) || 0;
       const originalCount = Number(m.original_num_ratings) || 0;
       
       if (originalCount > 0) {
         const distance = Math.abs(rating - originalRating);
-        const estimatedCount = Math.round(
+        const estimated = Math.round(
           originalCount * Math.exp(-Math.pow(distance, 2) / 4) / 2.5
         );
-        totalCount += estimatedCount;
+        estimatedOriginalCount += estimated;
       }
     });
     
+    // Add actual user ratings
+    const userCount = (userRatingsData || []).filter((r: any) => r.rating === rating).length;
+    
     return {
       rating: `${rating}`,
-      count: totalCount,
+      count: estimatedOriginalCount + userCount,
     };
   });
 
@@ -201,7 +216,7 @@ const Analytics = () => {
         <Card>
           <CardHeader>
             <CardTitle>Overall Rating Distribution</CardTitle>
-            <p className="text-sm text-muted-foreground mt-1">Based on original dataset ratings</p>
+            <p className="text-sm text-muted-foreground mt-1">Combined original and user ratings</p>
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[300px] w-full">
