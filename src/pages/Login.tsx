@@ -56,21 +56,10 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       <Cinema3DBackground />
       
-      <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-        <div className="text-center space-y-4 mb-[400px]">
-          <h1 className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700] drop-shadow-2xl">
-            Discover Telugu Cinema
-          </h1>
-          <p className="text-xl text-[#FFD700] drop-shadow-lg font-semibold">
-            Explore the rich world of Telugu movies, rate your favorites, and connect with fellow cinema lovers.
-          </p>
-        </div>
-      </div>
-      
       <Card className="w-full max-w-md mx-4 border-secondary/20 shadow-elegant relative z-20 bg-background/95 backdrop-blur-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-3xl font-bold text-center bg-gradient-text bg-clip-text text-transparent">
-            CinePulse
+          <CardTitle className="text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700]">
+            CINEPULSE
           </CardTitle>
           <CardDescription className="text-center">
             Sign in or create an account
