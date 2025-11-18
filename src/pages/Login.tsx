@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { Navigate } from "react-router-dom";
-import Cinema3DBackground from "@/components/Cinema3DBackground";
+import Parallax3DBackground from "@/components/Parallax3DBackground";
 
 const Login = () => {
   const { signIn, signUp, user } = useAuth();
@@ -54,21 +54,28 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      <Cinema3DBackground />
+      <Parallax3DBackground />
       
-      {/* Floating glassmorphism orbs */}
-      <div className="absolute top-20 left-20 w-64 h-64 bg-[#FFD700]/10 rounded-full blur-3xl animate-pulse z-10" />
-      <div className="absolute bottom-20 right-20 w-80 h-80 bg-[#8B0000]/10 rounded-full blur-3xl animate-pulse z-10" style={{ animationDelay: '1s' }} />
+      {/* Decorative elements */}
+      <div className="absolute top-10 left-10 w-32 h-32 border-2 border-[#FFD700]/20 rounded-full z-10 animate-pulse" />
+      <div className="absolute bottom-10 right-10 w-40 h-40 border-2 border-[#8B0000]/20 rounded-full z-10 animate-pulse" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-1/2 left-10 w-24 h-24 border border-[#FFD700]/10 rotate-45 z-10" />
+      <div className="absolute top-1/3 right-16 w-28 h-28 border border-[#8B0000]/10 rotate-12 z-10" />
       
-      <Card className="w-full max-w-md mx-4 border-[#FFD700]/30 shadow-[0_8px_32px_0_rgba(255,215,0,0.25),0_0_0_1px_rgba(255,215,0,0.1)_inset] relative z-20 bg-background/30 backdrop-blur-2xl overflow-hidden">
+      <Card className="w-full max-w-md mx-4 border-[#FFD700]/40 shadow-[0_20px_60px_0_rgba(255,215,0,0.3),0_0_0_1px_rgba(255,215,0,0.15)_inset,0_0_80px_rgba(139,0,0,0.2)] relative z-20 bg-background/20 backdrop-blur-3xl overflow-hidden transform transition-all duration-300 hover:shadow-[0_25px_80px_0_rgba(255,215,0,0.4),0_0_0_1px_rgba(255,215,0,0.2)_inset,0_0_100px_rgba(139,0,0,0.3)]">
         {/* Inner glow effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#FFD700]/5 via-transparent to-[#8B0000]/5 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#FFD700]/8 via-transparent to-[#8B0000]/8 pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-[#FFD700]/50 to-transparent" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-[#8B0000]/50 to-transparent" />
         
-        <CardHeader className="space-y-1 relative z-10">
-          <CardTitle className="text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700] drop-shadow-[0_0_20px_rgba(255,215,0,0.4)]">
-            CINEPULSE
-          </CardTitle>
-          <CardDescription className="text-center text-muted-foreground/90">
+        <CardHeader className="space-y-3 relative z-10 pb-6">
+          <div className="relative">
+            <CardTitle className="text-5xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700] drop-shadow-[0_0_30px_rgba(255,215,0,0.5)] tracking-wider animate-pulse">
+              CINEPULSE
+            </CardTitle>
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent rounded-full" />
+          </div>
+          <CardDescription className="text-center text-muted-foreground/90 text-sm pt-2">
             Sign in or create an account
           </CardDescription>
         </CardHeader>
