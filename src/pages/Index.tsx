@@ -28,11 +28,11 @@ const Index = () => {
       <div className="relative overflow-hidden min-h-[400px] flex items-center">
         <Cinema3DBackground />
         <div className="container mx-auto px-4 py-16 relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="text-6xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700] drop-shadow-2xl leading-tight">
+          <div className="max-w-3xl p-8 rounded-2xl bg-background/30 backdrop-blur-xl border border-[#FFD700]/20 shadow-[0_8px_32px_0_rgba(255,215,0,0.2)] before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br before:from-[#FFD700]/5 before:to-[#8B0000]/5 before:-z-10 relative">
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700] drop-shadow-[0_0_30px_rgba(255,215,0,0.4)] leading-tight">
               Discover Telugu Cinema
             </h1>
-            <p className="text-xl md:text-2xl text-[#FFD700] drop-shadow-lg font-semibold">
+            <p className="text-xl text-[#FFD700] drop-shadow-lg">
               Explore the rich world of Telugu movies, rate your favorites, and connect with fellow cinema lovers.
             </p>
           </div>

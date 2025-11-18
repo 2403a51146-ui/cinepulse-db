@@ -56,9 +56,9 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       <Cinema3DBackground />
       
-      <Card className="w-full max-w-md mx-4 border-secondary/20 shadow-elegant relative z-20 bg-background/95 backdrop-blur-md">
+      <Card className="w-full max-w-md mx-4 border-secondary/20 shadow-[0_8px_32px_0_rgba(255,215,0,0.15)] relative z-20 bg-background/40 backdrop-blur-xl before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-[#FFD700]/10 before:to-[#8B0000]/10 before:-z-10">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700]">
+          <CardTitle className="text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700] drop-shadow-[0_0_20px_rgba(255,215,0,0.3)]">
             CINEPULSE
           </CardTitle>
           <CardDescription className="text-center">
