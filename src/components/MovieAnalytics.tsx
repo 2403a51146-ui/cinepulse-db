@@ -164,8 +164,15 @@ const MovieAnalytics = ({ movieId }: MovieAnalyticsProps) => {
                   : "—"}
               </div>
               <p className="text-xs text-muted-foreground">
-                {trendData.length > 1 ? "User rating evolution" : "Not enough data"}
+                {trendData.length > 1 
+                  ? "User rating evolution" 
+                  : `${userRatings.length} user rating${userRatings.length !== 1 ? "s" : ""} so far. Add more ratings to see trend analysis!`}
               </p>
+              {trendData.length <= 1 && movieData.original_num_ratings > 0 && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  Original dataset has {movieData.original_num_ratings.toLocaleString()} ratings with {movieData.original_rating.toFixed(1)}/10 average
+                </p>
+              )}
             </CardContent>
           </Card>
         </>
