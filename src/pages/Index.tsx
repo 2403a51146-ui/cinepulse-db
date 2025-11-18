@@ -6,7 +6,7 @@ import MovieModal from "@/components/MovieModal";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useMovies } from "@/hooks/useMovies";
-import Cinema3DBackground from "@/components/Cinema3DBackground";
+import Parallax3DBackground from "@/components/Parallax3DBackground";
 
 const Index = () => {
   const [selectedMovie, setSelectedMovie] = useState<any | null>(null);
@@ -25,16 +25,31 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar onSearch={setSearchQuery} />
       
-      <div className="relative overflow-hidden min-h-[400px] flex items-center">
-        <Cinema3DBackground />
-        <div className="container mx-auto px-4 py-16 relative z-10">
-          <div className="max-w-3xl p-8 rounded-2xl bg-background/30 backdrop-blur-xl border border-[#FFD700]/20 shadow-[0_8px_32px_0_rgba(255,215,0,0.2)] before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br before:from-[#FFD700]/5 before:to-[#8B0000]/5 before:-z-10 relative">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700] drop-shadow-[0_0_30px_rgba(255,215,0,0.4)] leading-tight">
-              Discover Telugu Cinema
-            </h1>
-            <p className="text-xl text-[#FFD700] drop-shadow-lg">
-              Explore the rich world of Telugu movies, rate your favorites, and connect with fellow cinema lovers.
-            </p>
+      <div className="relative overflow-hidden min-h-[320px] flex items-start pt-8">
+        <Parallax3DBackground />
+        
+        {/* Decorative elements */}
+        <div className="absolute top-8 left-8 w-24 h-24 border-2 border-[#FFD700]/20 rounded-full z-10 animate-pulse" />
+        <div className="absolute bottom-8 right-8 w-32 h-32 border-2 border-[#8B0000]/20 rounded-full z-10 animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/3 right-12 w-20 h-20 border border-[#FFD700]/10 rotate-45 z-10" />
+        
+        <div className="container mx-auto px-4 py-8 relative z-10">
+          <div className="max-w-3xl p-6 rounded-2xl bg-background/20 backdrop-blur-3xl border border-[#FFD700]/40 shadow-[0_20px_60px_0_rgba(255,215,0,0.3),0_0_0_1px_rgba(255,215,0,0.15)_inset,0_0_80px_rgba(139,0,0,0.2)] relative overflow-hidden transform transition-all duration-300 hover:shadow-[0_25px_80px_0_rgba(255,215,0,0.4),0_0_0_1px_rgba(255,215,0,0.2)_inset,0_0_100px_rgba(139,0,0,0.3)]">
+            {/* Inner glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#FFD700]/8 via-transparent to-[#8B0000]/8 pointer-events-none" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-[#FFD700]/50 to-transparent" />
+            
+            <div className="relative z-10">
+              <div className="relative mb-4">
+                <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700] drop-shadow-[0_0_30px_rgba(255,215,0,0.5)] leading-tight tracking-wider animate-pulse">
+                  Discover Telugu Cinema
+                </h1>
+                <div className="absolute -bottom-2 left-0 w-28 h-1 bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-transparent rounded-full" />
+              </div>
+              <p className="text-base md:text-lg text-[#FFD700]/90 drop-shadow-lg">
+                Explore the rich world of Telugu movies, rate your favorites, and connect with fellow cinema lovers.
+              </p>
+            </div>
           </div>
         </div>
       </div>
