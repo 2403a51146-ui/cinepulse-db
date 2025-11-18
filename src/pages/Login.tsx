@@ -56,18 +56,25 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       <Cinema3DBackground />
       
-      <Card className="w-full max-w-md mx-4 border-secondary/20 shadow-[0_8px_32px_0_rgba(255,215,0,0.15)] relative z-20 bg-background/40 backdrop-blur-xl before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-br before:from-[#FFD700]/10 before:to-[#8B0000]/10 before:-z-10">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700] drop-shadow-[0_0_20px_rgba(255,215,0,0.3)]">
+      {/* Floating glassmorphism orbs */}
+      <div className="absolute top-20 left-20 w-64 h-64 bg-[#FFD700]/10 rounded-full blur-3xl animate-pulse z-10" />
+      <div className="absolute bottom-20 right-20 w-80 h-80 bg-[#8B0000]/10 rounded-full blur-3xl animate-pulse z-10" style={{ animationDelay: '1s' }} />
+      
+      <Card className="w-full max-w-md mx-4 border-[#FFD700]/30 shadow-[0_8px_32px_0_rgba(255,215,0,0.25),0_0_0_1px_rgba(255,215,0,0.1)_inset] relative z-20 bg-background/30 backdrop-blur-2xl overflow-hidden">
+        {/* Inner glow effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#FFD700]/5 via-transparent to-[#8B0000]/5 pointer-events-none" />
+        
+        <CardHeader className="space-y-1 relative z-10">
+          <CardTitle className="text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#8B0000] to-[#FFD700] drop-shadow-[0_0_20px_rgba(255,215,0,0.4)]">
             CINEPULSE
           </CardTitle>
-          <CardDescription className="text-center">
+          <CardDescription className="text-center text-muted-foreground/90">
             Sign in or create an account
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="relative z-10">
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-2 bg-background/40 backdrop-blur-sm border border-[#FFD700]/10">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
@@ -81,7 +88,7 @@ const Login = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="border-secondary/30"
+                    className="border-[#FFD700]/20 bg-background/30 backdrop-blur-sm focus:border-[#FFD700]/50 focus:ring-[#FFD700]/20"
                   />
                 </div>
                 <div className="space-y-2">
@@ -91,7 +98,7 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="border-secondary/30"
+                    className="border-[#FFD700]/20 bg-background/30 backdrop-blur-sm focus:border-[#FFD700]/50 focus:ring-[#FFD700]/20"
                   />
                 </div>
                 
@@ -110,7 +117,7 @@ const Login = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="border-secondary/30"
+                    className="border-[#FFD700]/20 bg-background/30 backdrop-blur-sm focus:border-[#FFD700]/50 focus:ring-[#FFD700]/20"
                   />
                 </div>
                 <div className="space-y-2">
@@ -120,7 +127,7 @@ const Login = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="border-secondary/30"
+                    className="border-[#FFD700]/20 bg-background/30 backdrop-blur-sm focus:border-[#FFD700]/50 focus:ring-[#FFD700]/20"
                   />
                 </div>
                 <div className="space-y-2">
@@ -131,7 +138,7 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={6}
-                    className="border-secondary/30"
+                    className="border-[#FFD700]/20 bg-background/30 backdrop-blur-sm focus:border-[#FFD700]/50 focus:ring-[#FFD700]/20"
                   />
                 </div>
                 
